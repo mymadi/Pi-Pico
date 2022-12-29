@@ -40,26 +40,24 @@ uart = busio.UART(TX, RX, receiver_buffer_size=2048)  # Use large buffer as we'r
 esp = adafruit_espatcontrol.ESP_ATcontrol(uart, 115200, debug=False)
 requests.set_socket(socket, esp)
 
-print("Resetting ESP module")
+print("Resetting ESP module✅")
 esp.soft_reset()
-
-# Thingspeak API url.
-tswriteAPI = secrets["thingspeak_write_api_key"]
-API_URL = "http://api.thingspeak.com"
+# Connect to Wi-Fi AP
+esp.connect(secrets)
 
 # Buzzer
 NOTE_G4 = 392
 NOTE_C5 = 523
 buzzer = board.GP18
-
-# Connect to Wi-Fi AP
-esp.connect(secrets)
-
 simpleio.tone(buzzer, NOTE_C5, duration=0.1)
+
+# Thingspeak API url.
+tswriteAPI = secrets["thingspeak_write_api_key"]
+API_URL = "http://api.thingspeak.com"
+
 
 while True:
     try:
-        print("\nChecking WiFi connection...")
         while not esp.is_connected:
             print("Connecting...")
             esp.connect(secrets)
@@ -70,14 +68,14 @@ while True:
         value3 = round(random.uniform(8,300),2)
         
         # Updating Thingspeak
-        print("\nUpdating Thingspeak...")
+        print("\nUpdating Thingspeak...✅")
         get_url = API_URL + "/update?api_key=" + tswriteAPI + "&field1=" + str(value1) + "&field2=" + str(value2) + "&field3=" + str(value3)
         r = requests.get(get_url)
         print("Value 1:", value1)
         print("Value 2:", value2)
         print("Value 3:", value3)
         print("Data Count:", r.text)
-        print("OK")
+        print("OK✅")
     
         time.sleep(20)  # Free version of Thingspeak only allows one update every 20 seconds.
         simpleio.tone(buzzer, NOTE_G4, duration=0.1)
