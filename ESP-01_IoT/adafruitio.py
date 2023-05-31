@@ -10,6 +10,7 @@ Additional libraries
     - adafruit_minimqtt
     - adafruit_register
     - simpleio.mpy
+    - adafruit_espatcontrol
 
 References:
 [1] https://learn.adafruit.com/pico-w-wifi-with-circuitpython/pico-w-with-adafruit-io
